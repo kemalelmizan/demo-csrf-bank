@@ -1,0 +1,21 @@
+{
+  "name": "demo_csrf_bank",
+  "version": "1.0.0",
+  "description": "demo csrf bank",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/kemalelmizan/demo-csrf-bank"
+  },
+  "keywords": [
+    "csrf"
+  ],
+  "dependencies": {
+    "express": "latest"
+  },
+  "author": "Kemal Elmizan",
+  "license": "MIT"
+}
