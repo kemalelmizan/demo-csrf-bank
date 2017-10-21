@@ -13,9 +13,11 @@
   "keywords": [
     "csrf"
   ],
-  "dependencies": {
-    "express": "latest"
-  },
   "author": "Kemal Elmizan",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2"
+  }
 }
