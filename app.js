@@ -1,13 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-// const helmet = require('helmet')
+// const helmet = require("helmet");
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-// app.use(helmet())
+// app.use(helmet());
 
 var loggedInUsers = [];
 var userData = [
@@ -28,15 +28,9 @@ var userData = [
   }
 ];
 
-app.get("/halo", (req, res) => {
-  res.send("Hello world!");
-});
-
-// log setiap request yang masuk
 // app.use((req, res, next) => {
 //   console.log("Incoming request");
-//   console.log(req.headers);
-//   console.log(req.body);
+//   console.log(req.headers.referer);
 //   next();
 // });
 
@@ -83,31 +77,31 @@ app.get("/logout", (req, res) => {
       loggedInUsers.splice(index, 1);
     }
   });
+  res.clearCookie("token");
   res.redirect("/");
 });
 
-app.get("/transfer/:tousername/:amount", (req, res) => {
+app.post("/transfer", (req, res) => {
   var transferSuccess = false;
-  loggedInUsers.forEach((loggedInUser, index) => {
-    // if (req.cookies.token == loggedInUser.token) {
-    if (req.cookies.token == loggedInUser.token) {
-      userData.filter(
-        user => user.username == loggedInUser.username
-      )[0].balance -= parseInt(req.params.amount);
-
-      userData.filter(
-        user => user.username == req.params.tousername
-      )[0].balance += parseInt(req.params.amount);
-
-      transferSuccess = true;
-      console.log(
-        `${loggedInUser.username} transferred ${req.params.amount} to ${req
-          .params.tousername}`
-      );
-      console.log("Current user data: \n", userData);
-      res.send("transfer success");
-    }
-  });
+  if (req.headers.referer === "http://localhost:3000/") {
+    loggedInUsers.forEach((loggedInUser, index) => {
+      if (req.cookies.token == loggedInUser.token) {
+        userData.filter(
+          user => user.username == loggedInUser.username
+        )[0].balance -= parseInt(req.body.amount);
+        userData.filter(
+          user => user.username == req.body.tousername
+        )[0].balance += parseInt(req.body.amount);
+        transferSuccess = true;
+        console.log(
+          `${loggedInUser.username} transferred ${req.body.amount} to ${req.body
+            .tousername}`
+        );
+        console.log("Current user data: \n", userData);
+        res.send("transfer success");
+      }
+    });
+  }
   if (!transferSuccess) res.send("transfer failed");
 });
 

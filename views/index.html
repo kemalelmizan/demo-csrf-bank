@@ -126,9 +126,12 @@
         }
       );
       $("#transfer").click(function (event) {
-        $.get("transfer/" +
-          prompt("Input the username you want to transfer to") + "/" + 
-          prompt("How much do you want to transfer?"),
+        var usernameTo = prompt("Input the username you want to transfer to");
+        var howMuch = prompt("How much do you want to transfer?");
+        $.post("transfer/", {
+            tousername: usernameTo,
+            amount: howMuch
+          },
           function (data) {
             console.log(data);
             location.reload();
